@@ -38,13 +38,13 @@ int main(void)
   LogRecord *pLogRecord = (LogRecord *)buffer;
   LogHeader *pLogHeader = &pLogRecord->header;
   F001_Header *pF001Header = (F001_Header *)pLogRecord->payload;
-  unsigned char *pBufferTail = write_F001_D001_Data(pLogRecord->payload);
+  unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
 
   char sizeBuffer[9];
   snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
     pBufferTail - (unsigned char *)pF001Header);
 
-  pLogRecord->header = (LogHeader){
+  *pLogHeader = (LogHeader){
     .date = "20260102",
     .time = "112233444",
     .kind = "F001",
@@ -53,7 +53,25 @@ int main(void)
   memcpy(&pLogRecord->header.size, sizeBuffer,
     sizeof(pLogRecord->header.size));
 
-  fwrite(buffer, sizeof(buffer), 1, stdout);
+  fwrite(buffer, pBufferTail - buffer, 1, stdout);
+
+  /* 2回目 */
+
+  pBufferTail = write_F001_D001_data(pLogRecord->payload);
+
+  snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
+    pBufferTail - (unsigned char *)pF001Header);
+
+  *pLogHeader = (LogHeader){
+    .date = "20260102",
+    .time = "112233555",
+    .kind = "F001",
+  };
+
+  memcpy(&pLogRecord->header.size, sizeBuffer,
+    sizeof(pLogRecord->header.size));
+
+  fwrite(buffer, pBufferTail - buffer, 1, stdout);
 
   return 0;
 }
