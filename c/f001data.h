@@ -1,14 +1,16 @@
 #ifndef F001_DATA_H
 #define F001_DATA_H
 
+/* F001系のデータは固定長データをイメージしている。*/
+
 #include <stdint.h>
 
 #pragma pack(push, 1)
 
 typedef struct f001_data
 {
-  char type[3]; /* DXX */
-  char data[0]; /* F001_DXX */
+  char type[4]; /* DXXX */
+  unsigned char data[0]; /* F001_DXXX */
 } F001_Header;
 
 typedef struct f001_d001
