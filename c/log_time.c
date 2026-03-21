@@ -24,21 +24,21 @@ struct timespec normalize_timespec(const struct timespec *ts)
 
 struct timespec parse_time_str(const char *str)
 {
+  int raw_year;
+  int raw_mon;
   struct tm t = {0};
-  long ms = 0;
+  long ms;
 
   sscanf(str, "%4d/%2d/%2d %2d:%2d:%2d.%3ld",
-    &t.tm_year, &t.tm_mon, &t.tm_mday,
+    &raw_year, &raw_mon, &t.tm_mday,
     &t.tm_hour, &t.tm_min, &t.tm_sec, &ms);
 
-  t.tm_year -= 1900;
-  t.tm_mon -= 1;
+  t.tm_year = raw_year - 1900;
+  t.tm_mon  = raw_mon - 1;
   t.tm_isdst = -1;
 
-  struct timespec ts;
-  ts.tv_sec = mktime(&t);
-  ts.tv_nsec = ms * NS_PER_MS; /* ミリ秒 -> ナノ秒 */
-  return ts;
+  struct timespec ret = { .tv_sec = mktime(&t), .tv_nsec = ms * NS_PER_MS };
+  return ret;
 }
 
 void print_timespec(const struct timespec *ts)
