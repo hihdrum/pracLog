@@ -41,13 +41,19 @@ struct timespec parse_time_str(const char *str)
   return ret;
 }
 
-void print_timespec(const struct timespec *ts)
+/**
+ * struct timespecをログの時刻フォーマットに変換する。
+ * @return 変換フォーマット文字列へのポインタ(注 : 静的バッファ)
+ */
+const char *log_time_format(const struct timespec *ts)
 {
   struct tm *lt = localtime(&ts->tv_sec);
-  char buf[64];
 
-  strftime(buf, sizeof(buf), "%Y%m%d%H%M%S", lt);
-  printf("%s%03ld\n", buf, ts->tv_nsec / NS_PER_MS);
+  static char retStr[64];
+  size_t milliSecondsIndex = strftime(retStr, sizeof(retStr), "%Y%m%d%H%M%S", lt);
+  sprintf(&retStr[milliSecondsIndex], "%03ld", ts->tv_nsec / NS_PER_MS);
+
+  return retStr;
 }
 
 int main()
@@ -61,13 +67,13 @@ int main()
 
   for(int i = 0; i < 10; i++)
   {
+    /* ランダム増加 100ms - 1500ms */
     long inc_ms = (rand() % 1401) + 100;
 
     current_ts.tv_nsec += (inc_ms * NS_PER_MS);
     current_ts = normalize_timespec(&current_ts);
 
-    printf("[%02d] ", i + 1);
-    print_timespec(&current_ts);
+    printf("[%02d] %s\n", i + 1, log_time_format(&current_ts));
   }
 
   return 0;
