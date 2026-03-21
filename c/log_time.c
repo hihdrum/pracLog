@@ -56,6 +56,14 @@ const char *log_time_format(const struct timespec *ts)
   return retStr;
 }
 
+/**
+ * @return min <= x <= max の範囲の乱数値
+ */
+int get_next_increment_ms(int min, int max)
+{
+  return (rand() % (max - min + 1)) + min;
+}
+
 int main()
 {
   const char *start_time = "2026/01/02 11:22:33.444";
@@ -67,8 +75,7 @@ int main()
 
   for(int i = 0; i < 10; i++)
   {
-    /* ランダム増加 100ms - 1500ms */
-    long inc_ms = (rand() % 1401) + 100;
+    long inc_ms = get_next_increment_ms(100, 1500);
 
     current_ts.tv_nsec += (inc_ms * NS_PER_MS);
     current_ts = normalize_timespec(&current_ts);
