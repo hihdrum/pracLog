@@ -1,4 +1,7 @@
 *.swp
 *.d
 *.o
+*.org
+*.org~
+a.out
 main
