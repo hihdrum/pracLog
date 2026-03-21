@@ -22,7 +22,11 @@ struct timespec normalize_timespec(const struct timespec *ts)
   return ret;
 }
 
-struct timespec parse_time_str(const char *str)
+/**
+ * YYYY/mm/dd HH:MM:SS.sss形式の文字列をstruct timespecに
+ * 変換する。
+ */
+struct timespec parse_date_time(const char *str)
 {
   int raw_year;
   int raw_mon;
@@ -45,7 +49,7 @@ struct timespec parse_time_str(const char *str)
  * struct timespecをログの時刻フォーマットに変換する。
  * @return 変換フォーマット文字列へのポインタ(注 : 静的バッファ)
  */
-const char *log_time_format(const struct timespec *ts)
+const char *log_date_time(const struct timespec *ts)
 {
   struct tm *lt = localtime(&ts->tv_sec);
 
@@ -76,7 +80,7 @@ struct timespec add_random_ms(const struct timespec *ts, int min, int max)
 int main()
 {
   const char *start_time = "2026/01/02 11:22:33.444";
-  struct timespec current_ts = parse_time_str(start_time);
+  struct timespec current_ts = parse_date_time(start_time);
 
   srand(0);
 
@@ -86,7 +90,7 @@ int main()
   for(int i = 0; i < 10; i++)
   {
     next_ts = add_random_ms(&next_ts, 100, 1500);
-    printf("[%02d] %s\n", i + 1, log_time_format(&next_ts));
+    printf("[%02d] %s\n", i + 1, log_date_time(&next_ts));
   }
 
   return 0;
