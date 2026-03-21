@@ -7,14 +7,19 @@
 
 /**
  * ナノ秒部分が1秒を超えている場合に秒を繰り上げる。
+ * 戻り値 : 繰上げ処理済み struct timespec
  */
-void normalize_timespec(struct timespec *ts)
+struct timespec normalize_timespec(const struct timespec *ts)
 {
-  if(ts->tv_nsec >= NS_PER_SEC)
+  struct timespec ret = *ts;
+
+  if(ret.tv_nsec >= NS_PER_SEC)
   {
-    ts->tv_sec += ts->tv_nsec / NS_PER_SEC;
-    ts->tv_nsec %= NS_PER_SEC;
+    ret.tv_sec += ts->tv_nsec / NS_PER_SEC;
+    ret.tv_nsec = ts->tv_nsec % NS_PER_SEC;
   }
+
+  return ret;
 }
 
 struct timespec parse_time_str(const char *str)
@@ -59,7 +64,7 @@ int main()
     long inc_ms = (rand() % 1401) + 100;
 
     current_ts.tv_nsec += (inc_ms * NS_PER_MS);
-    normalize_timespec(&current_ts);
+    current_ts = normalize_timespec(&current_ts);
 
     printf("[%02d] ", i + 1);
     print_timespec(&current_ts);
