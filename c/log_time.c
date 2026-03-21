@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define NS_PER_MS     1000000L // [ナノ秒/ミリ秒]
+#define NS_PER_SEC 1000000000L // [ナノ秒/秒]
+
 /**
- * ナノ秒部分が1秒を超えた場合に秒を繰り上げる。
+ * ナノ秒部分が1秒を超えている場合に秒を繰り上げる。
  */
 void normalize_timespec(struct timespec *ts)
 {
-  if(ts->tv_nsec >= 1000000000L)
+  if(ts->tv_nsec >= NS_PER_SEC)
   {
-    /* 繰上げ処理を行う。*/
-    ts->tv_sec += ts->tv_nsec / 1000000000L;
-    ts->tv_nsec %= 1000000000L;
+    ts->tv_sec += ts->tv_nsec / NS_PER_SEC;
+    ts->tv_nsec %= NS_PER_SEC;
   }
 }
 
@@ -30,7 +32,7 @@ struct timespec parse_time_str(const char *str)
 
   struct timespec ts;
   ts.tv_sec = mktime(&t);
-  ts.tv_nsec = ms * 1000000L; /* ミリ秒 -> ナノ秒 */
+  ts.tv_nsec = ms * NS_PER_MS; /* ミリ秒 -> ナノ秒 */
   return ts;
 }
 
@@ -40,7 +42,7 @@ void print_timespec(const struct timespec *ts)
   char buf[64];
 
   strftime(buf, sizeof(buf), "%Y%m%d%H%M%S", lt);
-  printf("%s%03ld\n", buf, ts->tv_nsec / 1000000L);
+  printf("%s%03ld\n", buf, ts->tv_nsec / NS_PER_MS);
 }
 
 int main()
@@ -56,7 +58,7 @@ int main()
   {
     long inc_ms = (rand() % 1401) + 100;
 
-    current_ts.tv_nsec += (inc_ms * 1000000L);
+    current_ts.tv_nsec += (inc_ms * NS_PER_MS);
     normalize_timespec(&current_ts);
 
     printf("[%02d] ", i + 1);
