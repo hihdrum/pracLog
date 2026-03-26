@@ -5,8 +5,8 @@ CFLAGS += -MMD
 %o : %c
 	$(CC) $(CFLAGS)
 
-main : main.o
-	$(CC) $(CFLAGS) main.o -o main
+main : main.o log_time.o
+	$(CC) $(CFLAGS) main.o log_time.o -o main
 
 -include *d
 
