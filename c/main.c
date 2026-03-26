@@ -41,6 +41,7 @@ int main(void)
   const char *log_start_time_str = "2025/01/01 00:00:00.000";
   struct timespec log_time = parse_date_time(log_start_time_str);
 
+#if 0
   unsigned char buffer[256] = {0};
 
   /* F001_D001データのログ */
@@ -48,9 +49,18 @@ int main(void)
   LogHeader *pLogHeader = &pLogRecord->header;
   F001_Header *pF001Header = (F001_Header *)pLogRecord->payload;
   unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
+#endif
 
   for(int i = 0; i < 2; i++)
   {
+    unsigned char buffer[256] = {0};
+
+    /* F001_D001データのログ */
+    LogRecord *pLogRecord = (LogRecord *)buffer;
+    LogHeader *pLogHeader = &pLogRecord->header;
+    F001_Header *pF001Header = (F001_Header *)pLogRecord->payload;
+    unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
+
     char sizeBuffer[9];
     snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
       pBufferTail - (unsigned char *)pF001Header);
@@ -63,6 +73,7 @@ int main(void)
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
 
+    /* 次回向け処理 */
     pF001Header = (F001_Header *)pLogRecord->payload;
     pBufferTail = write_F001_D001_data(pLogRecord->payload);
 
