@@ -3,5 +3,6 @@
 *.o
 *.org
 *.org~
+tags
 a.out
 main
