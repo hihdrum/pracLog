@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "log.h"
 #include "f001data.h"
 #include "f002data.h"
 #include "f003data.h"
+#include "log_time.h"
 
 /* F001 データ書込み用 */
 int getRandomInt16(void)
@@ -18,6 +20,9 @@ F001_D001 rand_F001D001(void)
   return (F001_D001){ .position = getRandomInt16() };
 }
 
+/**
+ * @return ペイロード開始アドレス
+ */
 unsigned char *write_F001_D001_data(unsigned char *buffer)
 {
   F001_Header *pF001Header = (F001_Header *)buffer;
@@ -32,6 +37,10 @@ unsigned char *write_F001_D001_data(unsigned char *buffer)
 int main(void)
 {
   srand(0);
+
+  const char *log_start_time_str = "2025/01/01 00:00:00.000";
+  struct timespec log_time = parse_date_time(log_start_time_str);
+
   unsigned char buffer[256] = {0};
 
   /* F001_D001データのログ */
@@ -41,14 +50,13 @@ int main(void)
   unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
 
   char sizeBuffer[9];
+
+  /* 1回目 */
   snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
     pBufferTail - (unsigned char *)pF001Header);
 
-  *pLogHeader = (LogHeader){
-    .date = "20260102",
-    .time = "112233444",
-    .kind = "F001",
-  };
+  strcpy((char *)pLogHeader, log_date_time(&log_time));
+  memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
 
   memcpy(&pLogRecord->header.size, sizeBuffer,
     sizeof(pLogRecord->header.size));
@@ -56,17 +64,15 @@ int main(void)
   fwrite(buffer, pBufferTail - buffer, 1, stdout);
 
   /* 2回目 */
+  log_time = add_random_ms(&log_time, 10, 2000);
 
   pBufferTail = write_F001_D001_data(pLogRecord->payload);
 
   snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
     pBufferTail - (unsigned char *)pF001Header);
 
-  *pLogHeader = (LogHeader){
-    .date = "20260102",
-    .time = "112233555",
-    .kind = "F001",
-  };
+  strcpy((char *)pLogHeader, log_date_time(&log_time));
+  memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
 
   memcpy(&pLogRecord->header.size, sizeBuffer,
     sizeof(pLogRecord->header.size));
