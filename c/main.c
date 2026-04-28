@@ -86,5 +86,31 @@ int main(void)
     log_time = add_random_ms(&log_time, 10, 2000);
   } while(++i < 2);
 
+  i = 0;
+  do
+  {
+    unsigned char buffer[256] = {0};
+
+    /* F001_D002データのログ */
+    LogRecord *pLogRecord = (LogRecord *)buffer;
+    LogHeader *pLogHeader = &pLogRecord->header;
+    F002_Header *pF002Header = (F002_Header *)pLogRecord->payload;
+    unsigned char *pBufferTail = write_F001_D002_data(pLogRecord->payload);
+
+    char sizeBuffer[9];
+    snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
+      pBufferTail - (unsigned char *)pF002Header);
+
+    strcpy((char *)pLogHeader, log_date_time(&log_time));
+    memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
+
+    memcpy(&pLogRecord->header.size, sizeBuffer,
+      sizeof(pLogRecord->header.size));
+
+    fwrite(buffer, pBufferTail - buffer, 1, stdout);
+
+    log_time = add_random_ms(&log_time, 10, 2000);
+  } while(++i < 2);
+
   return 0;
 }
