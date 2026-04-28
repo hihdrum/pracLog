@@ -15,12 +15,12 @@ int getRandomInt16(void)
   return (int16_t)(rand() & 0x7FFF);
 }
 
-F001_D001 rand_F001D001(void)
+F001_D001 rand_F001_D001(void)
 {
   return (F001_D001){ .position = getRandomInt16() };
 }
 
-F001_D002 rand_F001D002(void)
+F001_D002 rand_F001_D002(void)
 {
   return (F001_D002){ .x = getRandomInt16(),
                       .y = getRandomInt16()
@@ -35,7 +35,7 @@ unsigned char *write_F001_D001_data(unsigned char *buffer)
   F001_Header *pF001Header = (F001_Header *)buffer;
   F001_D001 *pF001D001 = (F001_D001 *)pF001Header->data;
 
-  *pF001D001 = rand_F001D001();
+  *pF001D001 = rand_F001_D001();
   *pF001Header = (F001_Header){ .type = "D001" };
 
   return (unsigned char *)(pF001D001 + 1);
