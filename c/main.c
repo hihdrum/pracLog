@@ -20,6 +20,13 @@ F001_D001 rand_F001D001(void)
   return (F001_D001){ .position = getRandomInt16() };
 }
 
+F001_D002 rand_F001D002(void)
+{
+  return (F001_D002){ .x = getRandomInt16(),
+                      .y = getRandomInt16()
+                    };
+}
+
 /**
  * @return 次ペイロード開始アドレス
  */
