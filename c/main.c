@@ -65,52 +65,52 @@ int main(void)
   {
     unsigned char buffer[256] = {0};
 
-    /* F001_D001データのログ */
+    /* F001_DXXデータのログ */
     LogRecord *pLogRecord = (LogRecord *)buffer;
     LogHeader *pLogHeader = &pLogRecord->header;
-    F001_Header *pF001Header = (F001_Header *)pLogRecord->payload;
-    unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
 
-    char sizeBuffer[9];
-    snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
-      pBufferTail - (unsigned char *)pF001Header);
+    int typeD = rand() % 2;
+    if(0 == typeD)
+    {
+      /* F001_D001 */
+      F001_Header *pF001Header = (F001_Header *)pLogRecord->payload;
+      unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
 
-    strcpy((char *)pLogHeader, log_date_time(&log_time));
-    memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
+      char sizeBuffer[9];
+      snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
+        pBufferTail - (unsigned char *)pF001Header);
 
-    memcpy(&pLogRecord->header.size, sizeBuffer,
-      sizeof(pLogRecord->header.size));
+      strcpy((char *)pLogHeader, log_date_time(&log_time));
+      memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
 
-    fwrite(buffer, pBufferTail - buffer, 1, stdout);
+      memcpy(&pLogRecord->header.size, sizeBuffer,
+        sizeof(pLogRecord->header.size));
 
-    log_time = add_random_ms(&log_time, 10, 2000);
-  } while(++i < 2);
+      fwrite(buffer, pBufferTail - buffer, 1, stdout);
 
-  i = 0;
-  do
-  {
-    unsigned char buffer[256] = {0};
+      log_time = add_random_ms(&log_time, 10, 2000);
+    }
+    else
+    {
+      /* F001_D002 */
+      F002_Header *pF002Header = (F002_Header *)pLogRecord->payload;
+      unsigned char *pBufferTail = write_F001_D002_data(pLogRecord->payload);
 
-    /* F001_D002データのログ */
-    LogRecord *pLogRecord = (LogRecord *)buffer;
-    LogHeader *pLogHeader = &pLogRecord->header;
-    F002_Header *pF002Header = (F002_Header *)pLogRecord->payload;
-    unsigned char *pBufferTail = write_F001_D002_data(pLogRecord->payload);
+      char sizeBuffer[9];
+      snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
+        pBufferTail - (unsigned char *)pF002Header);
 
-    char sizeBuffer[9];
-    snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
-      pBufferTail - (unsigned char *)pF002Header);
+      strcpy((char *)pLogHeader, log_date_time(&log_time));
+      memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
 
-    strcpy((char *)pLogHeader, log_date_time(&log_time));
-    memcpy(pLogHeader->kind, "F001", sizeof(pLogHeader->kind));
+      memcpy(&pLogRecord->header.size, sizeBuffer,
+        sizeof(pLogRecord->header.size));
 
-    memcpy(&pLogRecord->header.size, sizeBuffer,
-      sizeof(pLogRecord->header.size));
+      fwrite(buffer, pBufferTail - buffer, 1, stdout);
 
-    fwrite(buffer, pBufferTail - buffer, 1, stdout);
-
-    log_time = add_random_ms(&log_time, 10, 2000);
-  } while(++i < 2);
+      log_time = add_random_ms(&log_time, 10, 2000);
+    }
+  } while(++i < 10);
 
   return 0;
 }
