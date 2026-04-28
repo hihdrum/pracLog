@@ -21,7 +21,7 @@ F001_D001 rand_F001D001(void)
 }
 
 /**
- * @return ペイロード開始アドレス
+ * @return 次ペイロード開始アドレス
  */
 unsigned char *write_F001_D001_data(unsigned char *buffer)
 {
