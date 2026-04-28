@@ -33,23 +33,23 @@ F001_D002 rand_F001_D002(void)
 unsigned char *write_F001_D001_data(unsigned char *buffer)
 {
   F001_Header *pF001Header = (F001_Header *)buffer;
-  F001_D001 *pF001D001 = (F001_D001 *)pF001Header->data;
+  F001_D001 *pF001_D001 = (F001_D001 *)pF001Header->data;
 
-  *pF001D001 = rand_F001_D001();
+  *pF001_D001 = rand_F001_D001();
   *pF001Header = (F001_Header){ .type = "D001" };
 
-  return (unsigned char *)(pF001D001 + 1);
+  return (unsigned char *)(pF001_D001 + 1);
 }
 
 unsigned char *write_F001_D002_data(unsigned char *buffer)
 {
   F001_Header *pF001Header = (F001_Header *)buffer;
-  F001_D002 *pF001D002 = (F001_D002 *)pF001Header->data;
+  F001_D002 *pF001_D002 = (F001_D002 *)pF001Header->data;
 
-  *pF001D002 = rand_F001_D002();
+  *pF001_D002 = rand_F001_D002();
   *pF001Header = (F001_Header){ .type = "D002" };
 
-  return (unsigned char *)(pF001D002 + 1);
+  return (unsigned char *)(pF001_D002 + 1);
 }
 
 
