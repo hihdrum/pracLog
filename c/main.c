@@ -61,6 +61,11 @@ typedef struct logPayloadWriter
 const LogPayloadWriter lpwF001D001 = { .kind = "F001", .writer = write_F001_D001_data };
 const LogPayloadWriter lpwF001D002 = { .kind = "F001", .writer = write_F001_D002_data };
 
+const LogPayloadWriter lpws[] = {
+  { .kind = "F001", .writer = write_F001_D001_data },
+  { .kind = "F001", .writer = write_F001_D002_data },
+};
+
 unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer)
 {
     LogRecord *pLogRecord = (LogRecord *)buffer;
@@ -96,24 +101,13 @@ int main(void)
     /* F001_DXXデータのログ */
     LogRecord *pLogRecord = (LogRecord *)buffer;
 
-    /* 偶数:D001, 奇数:D002 とする。*/
     int typeD = rand() % 2;
-    if(0 == typeD)
-    {
-      /* F001_D001 */
-      unsigned char *pBufferTail = write_LogRecord(log_time, &lpwF001D001, pLogRecord);
+    const LogPayloadWriter *pLpw = &lpws[typeD];
+    unsigned char *pBufferTail = write_LogRecord(log_time, pLpw, pLogRecord);
 
-      fwrite(buffer, pBufferTail - buffer, 1, stdout);
-      log_time = add_random_ms(&log_time, 10, 2000);
-    }
-    else
-    {
-      /* F001_D002 */
-      unsigned char *pBufferTail = write_LogRecord(log_time, &lpwF001D002, pLogRecord);
+    fwrite(buffer, pBufferTail - buffer, 1, stdout);
+    log_time = add_random_ms(&log_time, 10, 2000);
 
-      fwrite(buffer, pBufferTail - buffer, 1, stdout);
-      log_time = add_random_ms(&log_time, 10, 2000);
-    }
   } while(++i < 10);
 
   return 0;
