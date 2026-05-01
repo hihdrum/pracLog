@@ -69,12 +69,13 @@ int main(void)
     LogRecord *pLogRecord = (LogRecord *)buffer;
     LogHeader *pLogHeader = &pLogRecord->header;
 
+    /* 偶数:D001, 奇数:D002 とする。*/
     int typeD = rand() % 2;
     if(0 == typeD)
     {
       /* F001_D001 */
       F001_Header *pF001Header = (F001_Header *)pLogRecord->payload;
-      unsigned char *pBufferTail = write_F001_D001_data(pLogRecord->payload);
+      unsigned char *pBufferTail = write_F001_D001_data((unsigned char *)pF001Header);
 
       char sizeBuffer[9];
       snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
@@ -94,7 +95,7 @@ int main(void)
     {
       /* F001_D002 */
       F002_Header *pF002Header = (F002_Header *)pLogRecord->payload;
-      unsigned char *pBufferTail = write_F001_D002_data(pLogRecord->payload);
+      unsigned char *pBufferTail = write_F001_D002_data((unsigned char *)pF002Header);
 
       char sizeBuffer[9];
       snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld",
