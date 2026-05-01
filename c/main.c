@@ -15,76 +15,10 @@ int getRandomInt16(void)
   return (int16_t)(rand() & 0x7FFF);
 }
 
-F001_D001 rand_F001_D001(void)
-{
-  return (F001_D001){ .position = getRandomInt16() };
-}
-
-F001_D002 rand_F001_D002(void)
-{
-  return (F001_D002){ .x = getRandomInt16(),
-                      .y = getRandomInt16()
-                    };
-}
-
-/**
- * @return 次ペイロード開始アドレス
- */
-unsigned char *write_F001_D001_data(unsigned char *buffer)
-{
-  F001_Header *pF001Header = (F001_Header *)buffer;
-  F001_D001 *pF001_D001 = (F001_D001 *)pF001Header->data;
-
-  *pF001_D001 = rand_F001_D001();
-  *pF001Header = (F001_Header){ .type = "D001" };
-
-  return (unsigned char *)(pF001_D001 + 1);
-}
-
-unsigned char *write_F001_D002_data(unsigned char *buffer)
-{
-  F001_Header *pF001Header = (F001_Header *)buffer;
-  F001_D002 *pF001_D002 = (F001_D002 *)pF001Header->data;
-
-  *pF001_D002 = rand_F001_D002();
-  *pF001Header = (F001_Header){ .type = "D002" };
-
-  return (unsigned char *)(pF001_D002 + 1);
-}
-
-typedef struct logPayloadWriter
-{
-  char kind[4];
-  unsigned char* (*writer)(unsigned char *);
-} LogPayloadWriter;
-
-const LogPayloadWriter lpwF001D001 = { .kind = "F001", .writer = write_F001_D001_data };
-const LogPayloadWriter lpwF001D002 = { .kind = "F001", .writer = write_F001_D002_data };
-
 const LogPayloadWriter lpws[] = {
   { .kind = "F001", .writer = write_F001_D001_data },
   { .kind = "F001", .writer = write_F001_D002_data },
 };
-
-unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer)
-{
-    LogRecord *pLogRecord = (LogRecord *)buffer;
-    LogHeader *pLogHeader = &pLogRecord->header;
-
-    unsigned char *pKindHeader = pLogRecord->payload;
-    unsigned char *pBufferTail = lpw->writer(pKindHeader);
-
-    char sizeBuffer[9];
-    snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld", pBufferTail - pKindHeader);
-
-    strcpy((char *)pLogHeader, log_date_time(&log_time));
-    memcpy(pLogHeader->kind, lpw->kind, sizeof(pLogHeader->kind));
-
-    memcpy(&pLogRecord->header.size, sizeBuffer,
-      sizeof(pLogRecord->header.size));
-
-  return pBufferTail;
-}
 
 int main(void)
 {

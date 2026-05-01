@@ -18,4 +18,13 @@ typedef struct logRecord
 
 #pragma pack(pop)
 
+/* ペイロード書き方情報 */
+typedef struct logPayloadWriter
+{
+  char kind[4]; /* 種別 : 4桁英数字 */
+  unsigned char* (*writer)(unsigned char *); /* 書込み関数 */
+} LogPayloadWriter;
+
+unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
+
 #endif
