@@ -8,6 +8,9 @@ CFLAGS += -MMD
 main : main.o log.o log_time.o f001data.o
 	$(CC) $(CFLAGS) $^ -o main
 
+tags :
+	ctags *.[ch]
+
 -include *d
 
 clean:
