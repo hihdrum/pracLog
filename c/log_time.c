@@ -2,13 +2,19 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NS_PER_MS     1000000L // [ナノ秒/ミリ秒]
-#define NS_PER_SEC 1000000000L // [ナノ秒/秒]
+#define NS_PER_MS     1000000L /**< [ナノ秒/ミリ秒] */
+#define NS_PER_SEC 1000000000L /**< [ナノ秒/秒] */
 
-/**
- * ナノ秒部分が1秒を超えている場合に秒を繰り上げる。
- * 戻り値 : 繰上げ処理済み struct timespec
- */
+/************************************************************
+ * @brief struct timespec ナノ秒部分の繰上げ処理を行います。
+ *
+ * @note ナノ秒部分が1秒を超えている場合、繰上げ処理を行った
+ *       struct timespecを返します。
+ * @pram[in] 日付・時刻情報
+ * @return 繰上げ処理後のstruct timespec
+ *
+ * @note 記述した説明がイマイチである。
+ ************************************************************/
 struct timespec normalize_timespec(const struct timespec *ts)
 {
   struct timespec ret = *ts;
@@ -22,10 +28,13 @@ struct timespec normalize_timespec(const struct timespec *ts)
   return ret;
 }
 
-/**
- * YYYY/mm/dd HH:MM:SS.sss形式の文字列をstruct timespecに
- * 変換する。
- */
+/************************************************************
+ * @brief struct timespec変換処理
+ *
+ * @note YYYY/mm/dd HH:MM:SS.sss形式の文字列をstruct timespecに変換します。
+ * @param[in] 日付・時刻情報
+ * @return struct timespec
+ ************************************************************/
 struct timespec parse_date_time(const char *str)
 {
   int raw_year;
@@ -45,10 +54,16 @@ struct timespec parse_date_time(const char *str)
   return ret;
 }
 
-/**
- * struct timespecをログの時刻フォーマットに変換する。
- * @return 変換フォーマット文字列へのポインタ(注 : 静的バッファ)
- */
+/************************************************************
+ * @brief ログレコード(日付情報,時刻情報)変換処理
+ *
+ * @note
+ *  - struct timespecをLogRecordのdate,timeに変換します。
+ *  - 変換データは静的バッファで保持しています。
+ *
+ * @pram[in] 日付・時刻情報
+ * @return 変換データ保持アドレス
+ ************************************************************/
 const char *log_date_time(const struct timespec *ts)
 {
   struct tm *lt = localtime(&ts->tv_sec);
@@ -60,14 +75,26 @@ const char *log_date_time(const struct timespec *ts)
   return retStr;
 }
 
-/**
- * @return min <= x <= max の範囲の乱数値
- */
+/************************************************************
+ * @brief 指定範囲内の乱数を得ます。
+ *
+ * @pram[in] 最小値
+ * @pram[in] 最大値
+ * @return min <= int <= max
+ ************************************************************/
 int get_next_increment_ms(int min, int max)
 {
   return (rand() % (max - min + 1)) + min;
 }
 
+/************************************************************
+ * @brief 指定した日付・時刻情報にランダム値を加算したものを返します。
+ *
+ * @pram[in] 日付・時刻情報
+ * @pram[in] 最小値
+ * @pram[in] 最大値
+ * @return 日付・時刻情報
+ ************************************************************/
 struct timespec add_random_ms(const struct timespec *ts, int min, int max)
 {
     struct timespec next_ts = *ts;
