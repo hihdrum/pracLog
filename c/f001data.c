@@ -8,7 +8,7 @@
  ************************************************************/
 F001_D001 rand_F001_D001(void)
 {
-  return (F001_D001){ .position = getRandomInt16() };
+  return (F001_D001){ .position = get_random_int16() };
 }
 
 /************************************************************
@@ -37,8 +37,8 @@ unsigned char *write_F001_D001_data(unsigned char *buffer)
 F001_D002 rand_F001_D002(void)
 {
   return (F001_D002){
-      .x = getRandomInt16(),
-      .y = getRandomInt16()
+      .x = get_random_int16(),
+      .y = get_random_int16()
     };
 }
 

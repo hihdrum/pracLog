@@ -2,7 +2,7 @@
 
 #include "randInt.h"
 
-int getRandomInt16(void)
+int get_random_int16(void)
 {
   return (int16_t)(rand() & 0x7FFF);
 }
