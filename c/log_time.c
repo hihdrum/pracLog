@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "randInt.h"
+
 #define NS_PER_MS     1000000L /**< [ナノ秒/ミリ秒] */
 #define NS_PER_SEC 1000000000L /**< [ナノ秒/秒] */
 
@@ -76,18 +78,6 @@ const char *log_date_time(const struct timespec *ts)
 }
 
 /************************************************************
- * @brief 指定範囲内の乱数を得ます。
- *
- * @pram[in] 最小値
- * @pram[in] 最大値
- * @return min <= int <= max
- ************************************************************/
-int get_next_increment_ms(int min, int max)
-{
-  return (rand() % (max - min + 1)) + min;
-}
-
-/************************************************************
  * @brief 指定した日付・時刻情報にランダム値を加算したものを返します。
  *
  * @pram[in] 日付・時刻情報
@@ -98,7 +88,7 @@ int get_next_increment_ms(int min, int max)
 struct timespec add_random_ms(const struct timespec *ts, int min, int max)
 {
     struct timespec next_ts = *ts;
-    long inc_ms = get_next_increment_ms(min, max);
+    long inc_ms = random_range(min, max);
 
     next_ts.tv_nsec += (inc_ms * NS_PER_MS);
     return normalize_timespec(&next_ts);
