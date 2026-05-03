@@ -1,6 +1,5 @@
+#include "randInt.h"
 #include "f001data.h"
-
-extern int getRandomInt16(void);
 
 F001_D001 rand_F001_D001(void)
 {

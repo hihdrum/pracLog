@@ -9,12 +9,6 @@
 #include "f003data.h"
 #include "log_time.h"
 
-/* F001 データ書込み用 */
-int getRandomInt16(void)
-{
-  return (int16_t)(rand() & 0x7FFF);
-}
-
 const LogPayloadWriter lpws[] = {
   { .kind = "F001", .writer = write_F001_D001_data },
   { .kind = "F001", .writer = write_F001_D002_data },
