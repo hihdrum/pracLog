@@ -12,6 +12,7 @@
 const LogPayloadWriter lpws[] = {
   { .kind = "F001", .writer = write_F001_D001_data },
   { .kind = "F001", .writer = write_F001_D002_data },
+  { .kind = "F002", .writer = write_F002_D001_data },
 };
 
 int main(void)
@@ -29,7 +30,7 @@ int main(void)
     /* F001_DXXデータのログ */
     LogRecord *pLogRecord = (LogRecord *)buffer;
 
-    int typeD = rand() % 2;
+    int typeD = rand() % 3;
     const LogPayloadWriter *pLpw = &lpws[typeD];
     unsigned char *pBufferTail = write_LogRecord(log_time, pLpw, pLogRecord);
 
