@@ -15,7 +15,7 @@ unsigned char *write_F003_D01_data(unsigned char *buffer)
   F003_Header *pF003Header = (F003_Header *)buffer;
   F003_D01 *pF003_D01 = (F003_D01 *)pF003Header->data;
 
-  int16_t len = random_range(0, 16);
+  int16_t len = random_range(0, D_F003_D01_MAX_MSG_LEN);
   char message_char = random_range('a', 'z');
 
   pF003_D01->len = len;
