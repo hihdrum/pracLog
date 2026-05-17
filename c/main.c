@@ -9,14 +9,52 @@
 #include "f003data.h"
 #include "log_time.h"
 
-const LogPayloadWriter lpws[] = {
-  { .kind = "F001", .writer = write_F001_D001_data },
-  { .kind = "F001", .writer = write_F001_D002_data },
-  { .kind = "F002", .writer = write_F002_D001_data },
-  { .kind = "F003", .writer = write_F003_D01_data },
+typedef struct
+{
+  LogPayloadWriter writer;
+  int weight;
+} LogPayloadWriterWithWeight;
+
+const LogPayloadWriterWithWeight lpws_ww[] = {
+  { .writer = { .kind = "F001", .writer = write_F001_D001_data }, .weight = 30 },
+  { .writer = { .kind = "F001", .writer = write_F001_D002_data }, .weight = 25 },
+  { .writer = { .kind = "F002", .writer = write_F002_D001_data }, .weight = 25 },
+  { .writer = { .kind = "F003", .writer = write_F003_D01_data },  .weight = 30 },
 };
 
-#define D_LOG_PAYLOAD_WRITERS (sizeof(lpws)/sizeof(lpws[0]))
+#define D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT (sizeof(lpws_ww)/sizeof(lpws_ww[0]))
+
+int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
+{
+  int total_weight = 0;
+  for(int i = 0; i < num; i++)
+  {
+    total_weight += lpws_ww[i].weight;
+  }
+
+  return total_weight;
+}
+
+const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
+{
+  int total_weight = LPWSWW_getTotalWeight(lpws_ww, num);
+
+  int rand_val = rand() % total_weight;
+  int cumsum = 0;
+  int typeD = 0;
+
+  for(int i = 0; i < num; i++)
+  {
+    cumsum += lpws_ww[i].weight;
+    if(rand_val < cumsum)
+    {
+      typeD = i;
+      break;
+    }
+  }
+
+  return &lpws_ww[typeD].writer;
+}
 
 int main(void)
 {
@@ -34,8 +72,7 @@ int main(void)
     /* F001_DXXデータのログ */
     LogRecord *pLogRecord = (LogRecord *)buffer;
 
-    int typeD = rand() % D_LOG_PAYLOAD_WRITERS;
-    const LogPayloadWriter *pLpw = &lpws[typeD];
+    const LogPayloadWriter *pLpw = LPSWW_randLogPayloadWriter(lpws_ww, D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT);
     unsigned char *pBufferTail = write_LogRecord(log_time, pLpw, pLogRecord);
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
