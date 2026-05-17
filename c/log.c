@@ -39,6 +39,16 @@ unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter 
   return pBufferTail;
 }
 
+/************************************************************
+ * @brief 確率情報の総和を得る。
+
+ * @note
+ *  - 指定されたデータ配列の要素を操作し総和を得ます。
+ *
+ * @pram[in] 配列
+ * @pram[in] 配列要素数
+ * @return 確率情報の総和
+ ************************************************************/
 int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
 {
   int total_weight = 0;
@@ -50,6 +60,15 @@ int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
   return total_weight;
 }
 
+/************************************************************
+ * @brief ログレコードへの書き込み関数をランダムに返します。
+
+ * @note
+ *
+ * @pram[in] 配列
+ * @pram[in] 要素数
+ * @return 書き込み関数
+ ************************************************************/
 const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
 {
   int total_weight = LPWSWW_getTotalWeight(lpws_ww, num);
@@ -70,5 +89,3 @@ const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWei
 
   return &lpws_ww[typeD].writer;
 }
-
-

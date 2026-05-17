@@ -30,8 +30,6 @@ int main(void)
   do
   {
     unsigned char buffer[256] = {0};
-
-    /* F001_DXXデータのログ */
     LogRecord *pLogRecord = (LogRecord *)buffer;
 
     const LogPayloadWriter *pLpw = LPSWW_randLogPayloadWriter(lpws_ww, D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT);
