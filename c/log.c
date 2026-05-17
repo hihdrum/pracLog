@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -37,3 +38,37 @@ unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter 
 
   return pBufferTail;
 }
+
+int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
+{
+  int total_weight = 0;
+  for(int i = 0; i < num; i++)
+  {
+    total_weight += lpws_ww[i].weight;
+  }
+
+  return total_weight;
+}
+
+const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
+{
+  int total_weight = LPWSWW_getTotalWeight(lpws_ww, num);
+
+  int rand_val = rand() % total_weight;
+  int cumsum = 0;
+  int typeD = 0;
+
+  for(int i = 0; i < num; i++)
+  {
+    cumsum += lpws_ww[i].weight;
+    if(rand_val < cumsum)
+    {
+      typeD = i;
+      break;
+    }
+  }
+
+  return &lpws_ww[typeD].writer;
+}
+
+

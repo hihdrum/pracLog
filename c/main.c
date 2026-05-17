@@ -9,12 +9,6 @@
 #include "f003data.h"
 #include "log_time.h"
 
-typedef struct
-{
-  LogPayloadWriter writer;
-  int weight;
-} LogPayloadWriterWithWeight;
-
 const LogPayloadWriterWithWeight lpws_ww[] = {
   { .writer = { .kind = "F001", .writer = write_F001_D001_data }, .weight = 30 },
   { .writer = { .kind = "F001", .writer = write_F001_D002_data }, .weight = 25 },
@@ -23,38 +17,6 @@ const LogPayloadWriterWithWeight lpws_ww[] = {
 };
 
 #define D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT (sizeof(lpws_ww)/sizeof(lpws_ww[0]))
-
-int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
-{
-  int total_weight = 0;
-  for(int i = 0; i < num; i++)
-  {
-    total_weight += lpws_ww[i].weight;
-  }
-
-  return total_weight;
-}
-
-const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
-{
-  int total_weight = LPWSWW_getTotalWeight(lpws_ww, num);
-
-  int rand_val = rand() % total_weight;
-  int cumsum = 0;
-  int typeD = 0;
-
-  for(int i = 0; i < num; i++)
-  {
-    cumsum += lpws_ww[i].weight;
-    if(rand_val < cumsum)
-    {
-      typeD = i;
-      break;
-    }
-  }
-
-  return &lpws_ww[typeD].writer;
-}
 
 int main(void)
 {
