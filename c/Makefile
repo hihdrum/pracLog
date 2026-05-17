@@ -9,7 +9,7 @@ main : main.o log.o log_time.o \
        f001data.o f002data.o f003data.o randInt.o
 	$(CC) $(CFLAGS) $^ -o main
 
-tags :
+tags : *.c *.h
 	ctags *.[ch]
 
 -include *d
