@@ -18,7 +18,7 @@ F001_D001 rand_F001_D001(void)
  * @pram[out] 書き込み先バッファアドレス
  * @return 書き込み後のバッファアドレス
  ************************************************************/
-unsigned char *write_F001_D001_data(unsigned char *buffer)
+unsigned char *write_F001_D001_data(const void *arg, unsigned char *buffer)
 {
   F001_Header *pF001Header = (F001_Header *)buffer;
   F001_D001 *pF001_D001 = (F001_D001 *)pF001Header->data;
@@ -49,7 +49,7 @@ F001_D002 rand_F001_D002(void)
  * @pram[out] 書き込み先バッファアドレス
  * @return 書き込み後のバッファアドレス
  ************************************************************/
-unsigned char *write_F001_D002_data(unsigned char *buffer)
+unsigned char *write_F001_D002_data(const void *arg, unsigned char *buffer)
 {
   F001_Header *pF001Header = (F001_Header *)buffer;
   F001_D002 *pF001_D002 = (F001_D002 *)pF001Header->data;

@@ -38,9 +38,9 @@ typedef struct f001_d003
 #pragma pack(pop)
 
 F001_D001 rand_F001_D001(void);
-unsigned char *write_F001_D001_data(unsigned char *buffer);
+unsigned char *write_F001_D001_data(const void *arg, unsigned char *buffer);
 
 F001_D002 rand_F001_D002(void);
-unsigned char *write_F001_D002_data(unsigned char *buffer);
+unsigned char *write_F001_D002_data(const void *arg, unsigned char *buffer);
 
 #endif

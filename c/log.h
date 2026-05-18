@@ -42,9 +42,11 @@ typedef struct logRecord
 typedef struct logPayloadWriter
 {
   char kind[4]; /**< 種別 : 4桁英数字 */
-  unsigned char* (*writer)(unsigned char *); /**< 書込み関数 */
+  unsigned char* (*writer)(const void *, unsigned char *); /**< 書込み関数 */
 } LogPayloadWriter;
 
 unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
+
+unsigned char *LOG_writeRecord(const struct timespec log_time, const char *kind, unsigned char *(*writer)(const void *, unsigned char *), const void *arg, LogRecord *buffer);
 
 #endif
