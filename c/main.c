@@ -13,6 +13,7 @@
 const LogPayloadWriter lpws[] = {
   { .kind = "F001", .writer = write_F001_D001_data, .arg = NULL },
   { .kind = "F001", .writer = write_F001_D002_data, .arg = NULL },
+  { .kind = "F001", .writer = write_F001_D002_data_sf, .arg = &(F001_D002_ScaleFactor){ .xsf = 10, .ysf = 0 }},
   { .kind = "F002", .writer = write_F002_D001_data, .arg = NULL },
   { .kind = "F003", .writer = write_F003_D01_data, .arg = NULL },
 };

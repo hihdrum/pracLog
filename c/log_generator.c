@@ -8,5 +8,5 @@ unsigned char *LogGen_writeRecord(
   LogRecord *buffer
 )
 {
-    return Log_writeRecord(log_time, lpw->kind, lpw->writer, NULL, buffer);
+    return Log_writeRecord(log_time, lpw->kind, lpw->writer, lpw->arg, buffer);
 }
