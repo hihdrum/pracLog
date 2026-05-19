@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "log.h"
+#include "log_generator.h"
 #include "f001data.h"
 #include "f002data.h"
 #include "f003data.h"
