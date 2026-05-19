@@ -25,7 +25,7 @@
  *            - Writer関数の第2引数となる。
  * @return 書き込み後のバッファアドレス
  ************************************************************/
-unsigned char *LOG_writeRecord(
+unsigned char *Log_writeRecord(
   const struct timespec log_time,
   const char *kind,
   unsigned char *(*recordWriter)(const void *writerArg, unsigned char *targetBuffer),
