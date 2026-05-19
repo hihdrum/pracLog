@@ -19,6 +19,6 @@ typedef struct logPayloadWriter
   unsigned char* (*writer)(const void *, unsigned char *); /**< 書込み関数 */
 } LogPayloadWriter;
 
-unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
+unsigned char *LogGen_writeRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
 
 #endif

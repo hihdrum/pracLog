@@ -37,7 +37,7 @@ int main(void)
 
     int typeD = rand() % D_LOG_PAYLOAD_WRITERS;
     const LogPayloadWriter *pLpw = &lpws[typeD];
-    unsigned char *pBufferTail = write_LogRecord(log_time, pLpw, pLogRecord);
+    unsigned char *pBufferTail = LogGen_writeRecord(log_time, pLpw, pLogRecord);
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
     log_time = add_random_ms(&log_time, 10, 2000);
