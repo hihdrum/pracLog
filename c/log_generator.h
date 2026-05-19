@@ -17,6 +17,7 @@ typedef struct logPayloadWriter
 {
   char kind[4]; /**< 種別 : 4桁英数字 */
   unsigned char* (*writer)(const void *, unsigned char *); /**< 書込み関数 */
+  void *arg; /** writer関数 第1引数 */
 } LogPayloadWriter;
 
 unsigned char *LogGen_writeRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
