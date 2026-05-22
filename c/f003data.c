@@ -10,7 +10,7 @@
  * @pram[out] 書き込み先バッファアドレス
  * @return 書き込み後のバッファアドレス
  ************************************************************/
-unsigned char *write_F003_D01_data(unsigned char *buffer)
+unsigned char *write_F003_D01_data(const void *arg, unsigned char *buffer)
 {
   F003_Header *pF003Header = (F003_Header *)buffer;
   F003_D01 *pF003_D01 = (F003_D01 *)pF003Header->data;

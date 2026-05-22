@@ -4,16 +4,18 @@
 #include <time.h>
 
 #include "log.h"
+#include "log_generator.h"
 #include "f001data.h"
 #include "f002data.h"
 #include "f003data.h"
 #include "log_time.h"
 
 const LogPayloadWriter lpws[] = {
-  { .kind = "F001", .writer = write_F001_D001_data },
-  { .kind = "F001", .writer = write_F001_D002_data },
-  { .kind = "F002", .writer = write_F002_D001_data },
-  { .kind = "F003", .writer = write_F003_D01_data },
+  { .kind = "F001", .writer = write_F001_D001_data, .arg = NULL },
+  { .kind = "F001", .writer = write_F001_D002_data, .arg = NULL },
+  { .kind = "F001", .writer = write_F001_D002_data_sf, .arg = &(F001_D002_ScaleFactor){ .xsf = 10, .ysf = 0 }},
+  { .kind = "F002", .writer = write_F002_D001_data, .arg = NULL },
+  { .kind = "F003", .writer = write_F003_D01_data, .arg = NULL },
 };
 
 #define D_LOG_PAYLOAD_WRITERS (sizeof(lpws)/sizeof(lpws[0]))
@@ -36,7 +38,7 @@ int main(void)
 
     int typeD = rand() % D_LOG_PAYLOAD_WRITERS;
     const LogPayloadWriter *pLpw = &lpws[typeD];
-    unsigned char *pBufferTail = write_LogRecord(log_time, pLpw, pLogRecord);
+    unsigned char *pBufferTail = LogGen_writeRecord(log_time, pLpw, pLogRecord);
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
     log_time = add_random_ms(&log_time, 10, 2000);

@@ -34,6 +34,6 @@ typedef struct f002_d001
 
 #pragma pack(pop)
 
-unsigned char *write_F002_D001_data(unsigned char *buffer);
+unsigned char *write_F002_D001_data(const void *arg, unsigned char *buffer);
 
 #endif
