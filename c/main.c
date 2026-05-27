@@ -5,6 +5,7 @@
 
 #include "log.h"
 #include "log_generator.h"
+#include "log_generator_with_weight.h"
 #include "f001data.h"
 #include "f002data.h"
 #include "f003data.h"
