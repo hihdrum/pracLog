@@ -14,7 +14,7 @@
  * @param[in] 配列要素数
  * @return 確率情報の総和
  ************************************************************/
-int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
+int LGWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
 {
   int total_weight = 0;
   for(int i = 0; i < num; i++)
@@ -34,9 +34,9 @@ int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
  * @param[in] 要素数
  * @return 書き込み関数
  ************************************************************/
-const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
+const LogPayloadWriter *LGWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
 {
-  int total_weight = LPWSWW_getTotalWeight(lpws_ww, num);
+  int total_weight = LGWW_getTotalWeight(lpws_ww, num);
 
   int rand_val = rand() % total_weight;
   int cumsum = 0;

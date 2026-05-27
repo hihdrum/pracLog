@@ -16,7 +16,7 @@ typedef struct
   int weight;
 } LogPayloadWriterWithWeight;
 
-int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num);
-const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num);
+int LGWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num);
+const LogPayloadWriter *LGWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num);
 
 #endif
