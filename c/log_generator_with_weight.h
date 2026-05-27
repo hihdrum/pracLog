@@ -1,7 +1,7 @@
 #ifndef LOG_GENERATOR_WITH_WEIGHT_H
 #define LOG_GENERATOR_WITH_WEIGHT_H
 
-#include "log.h"
+#include "log_generator.h"
 
 /************************************************************
  * @struct LogPayloadWriterWithWeight
@@ -17,6 +17,7 @@ typedef struct
 } LogPayloadWriterWithWeight;
 
 int LGWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num);
-const LogPayloadWriter *LGWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num);
+const LogPayloadWriter *LGWW_getRandomLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww,
+  int num);
 
 #endif

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <time.h>
-#include "log.h"
 #include "log_generator.h"
 #include "log_generator_with_weight.h"
 
@@ -34,7 +33,10 @@ int LGWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num)
  * @param[in] 要素数
  * @return 書き込み関数
  ************************************************************/
-const LogPayloadWriter *LGWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num)
+const LogPayloadWriter *LGWW_getRandomLogPayloadWriter(
+  const LogPayloadWriterWithWeight *lpws_ww,
+   int num
+)
 {
   int total_weight = LGWW_getTotalWeight(lpws_ww, num);
 

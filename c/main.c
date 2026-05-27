@@ -35,7 +35,7 @@ int main(void)
     unsigned char buffer[256] = {0};
     LogRecord *pLogRecord = (LogRecord *)buffer;
 
-    const LogPayloadWriter *pLpw = LGWW_randLogPayloadWriter(lpws_ww, D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT);
+    const LogPayloadWriter *pLpw = LGWW_getRandomLogPayloadWriter(lpws_ww, D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT);
     unsigned char *pBufferTail = LogGen_writeRecord(log_time, pLpw, pLogRecord);
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
