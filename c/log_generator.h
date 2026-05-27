@@ -24,12 +24,10 @@ unsigned char *LogGen_writeRecord(struct timespec log_time, const LogPayloadWrit
 
 /************************************************************
  * @struct LogPayloadWriterWithWeight
- * @brief LogRecordへのデータ書き込みを制御する構造体と確率情報
+ * @brief LogRecordへのデータ書き込みを制御する構造体と選択確率の重み情報を持つ。
  *
  * @note
- *  本構造体で以下への書き込みを制御する。
- *    - `header.kind`
- *    - `payload`
+ *  本構造体で`LogPayloadWriter`が選択される確率的な重み(`weight`)を制御する。
  ************************************************************/
 typedef struct
 {
@@ -37,7 +35,6 @@ typedef struct
   int weight;
 } LogPayloadWriterWithWeight;
 
-unsigned char *write_LogRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
 int LPWSWW_getTotalWeight(const LogPayloadWriterWithWeight *lpws_ww, int num);
 const LogPayloadWriter *LPSWW_randLogPayloadWriter(const LogPayloadWriterWithWeight *lpws_ww, int num);
 
