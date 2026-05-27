@@ -10,15 +10,15 @@
 #include "f003data.h"
 #include "log_time.h"
 
-const LogPayloadWriter lpws[] = {
-  { .kind = "F001", .writer = write_F001_D001_data, .arg = NULL },
-  { .kind = "F001", .writer = write_F001_D002_data, .arg = NULL },
-  { .kind = "F001", .writer = write_F001_D002_data_sf, .arg = &(F001_D002_ScaleFactor){ .xsf = 10, .ysf = 0 }},
-  { .kind = "F002", .writer = write_F002_D001_data, .arg = NULL },
-  { .kind = "F003", .writer = write_F003_D01_data, .arg = NULL },
+const LogPayloadWriterWithWeight lpws_ww[] = {
+  { .writer = { .kind = "F001", .writer = write_F001_D001_data, .arg = NULL }, .weight = 30 },
+  { .writer = { .kind = "F001", .writer = write_F001_D002_data, .arg = NULL }, .weight = 25 },
+  { .writer = { .kind = "F001", .writer = write_F001_D002_data_sf, .arg = &(F001_D002_ScaleFactor){ .xsf = 10, .ysf = 0 }}, .weight = 25 },
+  { .writer = { .kind = "F002", .writer = write_F002_D001_data, .arg = NULL }, .weight = 10 },
+  { .writer = { .kind = "F003", .writer = write_F003_D01_data, .arg = NULL }, .weight = 10 },
 };
 
-#define D_LOG_PAYLOAD_WRITERS (sizeof(lpws)/sizeof(lpws[0]))
+#define D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT (sizeof(lpws_ww)/sizeof(lpws_ww[0]))
 
 int main(void)
 {
@@ -32,12 +32,9 @@ int main(void)
   do
   {
     unsigned char buffer[256] = {0};
-
-    /* F001_DXXデータのログ */
     LogRecord *pLogRecord = (LogRecord *)buffer;
 
-    int typeD = rand() % D_LOG_PAYLOAD_WRITERS;
-    const LogPayloadWriter *pLpw = &lpws[typeD];
+    const LogPayloadWriter *pLpw = LPSWW_randLogPayloadWriter(lpws_ww, D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT);
     unsigned char *pBufferTail = LogGen_writeRecord(log_time, pLpw, pLogRecord);
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
