@@ -55,27 +55,6 @@ struct timespec LogTime_parseDateTime(const char *str)
 }
 
 /************************************************************
- * @brief ログレコード(日付情報,時刻情報)変換処理
- *
- * @note
- *  - struct timespecをLogRecordのdate,timeに変換します。
- *  - 変換データは静的バッファで保持しています。
- *
- * @pram[in] 日付・時刻情報
- * @return 変換データ保持アドレス
- ************************************************************/
-const char *log_date_time(const struct timespec *ts)
-{
-  struct tm *lt = localtime(&ts->tv_sec);
-
-  static char retStr[64];
-  size_t milliSecondsIndex = strftime(retStr, sizeof(retStr), "%Y%m%d%H%M%S", lt);
-  sprintf(&retStr[milliSecondsIndex], "%03ld", ts->tv_nsec / NS_PER_MS);
-
-  return retStr;
-}
-
-/************************************************************
  * @brief 指定した日付・時刻情報にランダム値を加算したものを返します。
  *
  * @pram[in] 日付・時刻情報

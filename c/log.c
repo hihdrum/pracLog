@@ -6,6 +6,27 @@
 #include "log_time.h"
 
 /************************************************************
+ * @brief ログレコード(日付情報,時刻情報)変換処理
+ *
+ * @note
+ *  - struct timespecをLogRecordのdate,timeに変換します。
+ *  - 変換データは静的バッファで保持しています。
+ *
+ * @pram[in] 日付・時刻情報
+ * @return 変換データ保持アドレス
+ ************************************************************/
+const char *Log_toHeaderDateTime(const struct timespec *ts)
+{
+  struct tm *lt = localtime(&ts->tv_sec);
+
+  static char retStr[64];
+  size_t milliSecondsIndex = strftime(retStr, sizeof(retStr), "%Y%m%d%H%M%S", lt);
+  sprintf(&retStr[milliSecondsIndex], "%03ld", ts->tv_nsec / NS_PER_MS);
+
+  return retStr;
+}
+
+/************************************************************
  * @brief バッファにログレコードを書き込みます。
 
  * @note
@@ -42,7 +63,7 @@ unsigned char *Log_writeRecord(
     char sizeBuffer[9];
     snprintf(sizeBuffer, sizeof(sizeBuffer), "%08ld", pBufferTail - pKindHeader);
 
-    strcpy((char *)pLogHeader, log_date_time(&log_time));
+    strcpy((char *)pLogHeader, Log_toHeaderDateTime(&log_time));
     memcpy(pLogHeader->kind, kind, sizeof(pLogHeader->kind));
 
     memcpy(&pLogRecord->header.size, sizeBuffer,

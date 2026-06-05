@@ -30,6 +30,8 @@ typedef struct logRecord
 
 #pragma pack(pop)
 
+const char *Log_toHeaderDateTime(const struct timespec *ts);
+
 unsigned char *Log_writeRecord(const struct timespec log_time, const char *kind,
   unsigned char *(*writer)(const void *, unsigned char *), const void *arg, LogRecord *buffer);
 

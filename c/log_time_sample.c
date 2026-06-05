@@ -15,7 +15,7 @@ int main()
   for(int i = 0; i < 10; i++)
   {
     next_ts = add_random_ms(&next_ts, 100, 1500);
-    printf("[%02d] %s\n", i + 1, log_date_time(&next_ts));
+    printf("[%02d] %s\n", i + 1, Log_toHeaderDateTime(&next_ts));
   }
 
   return 0;
