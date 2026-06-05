@@ -8,6 +8,6 @@
 
 struct timespec LogTime_normalize(const struct timespec *ts);
 struct timespec LogTime_parseDateTime(const char *str);
-struct timespec add_random_ms(const struct timespec *ts, int min, int max);
+struct timespec LogTime_addRandomMS(const struct timespec *ts, int min, int max);
 
 #endif

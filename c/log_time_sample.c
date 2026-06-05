@@ -14,7 +14,7 @@ int main()
   struct timespec next_ts = current_ts;
   for(int i = 0; i < 10; i++)
   {
-    next_ts = add_random_ms(&next_ts, 100, 1500);
+    next_ts = LogTime_addRandomMS(&next_ts, 100, 1500);
     printf("[%02d] %s\n", i + 1, Log_toHeaderDateTime(&next_ts));
   }
 

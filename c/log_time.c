@@ -62,7 +62,7 @@ struct timespec LogTime_parseDateTime(const char *str)
  * @pram[in] 最大値
  * @return 日付・時刻情報
  ************************************************************/
-struct timespec add_random_ms(const struct timespec *ts, int min, int max)
+struct timespec LogTime_addRandomMS(const struct timespec *ts, int min, int max)
 {
     struct timespec next_ts = *ts;
     long inc_ms = random_range(min, max);

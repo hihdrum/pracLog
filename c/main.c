@@ -41,7 +41,7 @@ int main(void)
     unsigned char *pBufferTail = LogGen_writeRecord(log_time, pLpw, pLogRecord);
 
     fwrite(buffer, pBufferTail - buffer, 1, stdout);
-    log_time = add_random_ms(&log_time, 10, 2000);
+    log_time = LogTime_addRandomMS(&log_time, 10, 2000);
 
   } while(++i < c_sample_data_num);
 
