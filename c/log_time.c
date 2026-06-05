@@ -3,9 +3,7 @@
 #include <time.h>
 
 #include "randInt.h"
-
-#define NS_PER_MS     1000000L /**< [ナノ秒/ミリ秒] */
-#define NS_PER_SEC 1000000000L /**< [ナノ秒/秒] */
+#include "log_time.h"
 
 /************************************************************
  * @brief struct timespec ナノ秒部分の繰上げ処理を行います。
