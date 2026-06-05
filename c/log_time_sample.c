@@ -5,7 +5,7 @@
 int main()
 {
   const char *start_time = "2026/01/02 11:22:33.444";
-  struct timespec current_ts = parse_date_time(start_time);
+  struct timespec current_ts = LogTime_parseDateTime(start_time);
 
   srand(0);
 

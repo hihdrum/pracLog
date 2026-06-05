@@ -17,7 +17,7 @@
  *
  * @note 記述した説明がイマイチである。
  ************************************************************/
-struct timespec normalize_timespec(const struct timespec *ts)
+struct timespec LogTime_normalize(const struct timespec *ts)
 {
   struct timespec ret = *ts;
 
@@ -37,7 +37,7 @@ struct timespec normalize_timespec(const struct timespec *ts)
  * @param[in] 日付・時刻情報
  * @return struct timespec
  ************************************************************/
-struct timespec parse_date_time(const char *str)
+struct timespec LogTime_parseDateTime(const char *str)
 {
   int raw_year;
   int raw_mon;
@@ -91,5 +91,5 @@ struct timespec add_random_ms(const struct timespec *ts, int min, int max)
     long inc_ms = random_range(min, max);
 
     next_ts.tv_nsec += (inc_ms * NS_PER_MS);
-    return normalize_timespec(&next_ts);
+    return LogTime_normalize(&next_ts);
 }

@@ -3,8 +3,8 @@
 
 #include <time.h>
 
-struct timespec normalize_timespec(const struct timespec *ts);
-struct timespec parse_date_time(const char *str);
+struct timespec LogTime_normalize(const struct timespec *ts);
+struct timespec LogTime_parseDateTime(const char *str);
 const char *log_date_time(const struct timespec *ts);
 struct timespec add_random_ms(const struct timespec *ts, int min, int max);
 

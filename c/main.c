@@ -29,7 +29,7 @@ int main(void)
   srand(0);
 
   const char *log_start_time_str = "2025/01/01 00:00:00.000";
-  struct timespec log_time = parse_date_time(log_start_time_str);
+  struct timespec log_time = LogTime_parseDateTime(log_start_time_str);
 
   int i = 0;
   do
