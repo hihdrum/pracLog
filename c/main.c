@@ -12,13 +12,21 @@
 #include "log_time.h"
 
 const LogPayloadWriterWithWeight lpws_ww[] = {
-  { .writer = { .kind = "F001", .writer = write_F001_D001_data, .arg = NULL }, .weight = 30 },
-  { .writer = { .kind = "F001", .writer = write_F001_D002_data, .arg = NULL }, .weight = 25 },
+  { .writer = { .kind = "F001", .writer = write_F001_D001_data, .arg = NULL },
+    .weight = 30 },
+
+  { .writer = { .kind = "F001", .writer = write_F001_D002_data, .arg = NULL },
+    .weight = 25 },
+
   { .writer = { .kind = "F001", .writer = write_F001_D002_data_sf,
-                .arg = &(F001_D002_ScaleFactor){ .xsf = 10, .ysf = 0 }
-              }, .weight = 25 },
-  { .writer = { .kind = "F002", .writer = write_F002_D001_data, .arg = NULL }, .weight = 10 },
-  { .writer = { .kind = "F003", .writer = write_F003_D01_data, .arg = NULL }, .weight = 10 },
+                .arg = &(F001_D002_ScaleFactor){ .xsf = 10, .ysf = 0 }},
+    .weight = 25 },
+
+  { .writer = { .kind = "F002", .writer = write_F002_D001_data, .arg = NULL },
+    .weight = 10 },
+
+  { .writer = { .kind = "F003", .writer = write_F003_D01_data, .arg = NULL },
+    .weight = 10 },
 };
 
 #define D_LOG_PAYLOAD_WRITERS_WITH_WEIGHT (sizeof(lpws_ww)/sizeof(lpws_ww[0]))
