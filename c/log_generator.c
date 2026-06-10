@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "log.h"
+#include "log_time.h"
 #include "log_generator.h"
 
 /************************************************************
@@ -25,4 +26,18 @@ unsigned char *LogGen_writeRecord(
 )
 {
     return Log_writeRecord(log_time, lpw->kind, lpw->writer, lpw->arg, buffer);
+}
+
+/************************************************************
+ * @brief 次のログレコードの日付・時刻を返す。
+
+ * @pram[in] ログレコードの日付・時刻
+ * @return 次のログレコードの日付・時刻
+ ************************************************************/
+struct timespec LogGen_nextTime(const struct timespec *ts)
+{
+  const int min_diff = 10;
+  const int max_diff = 2000;
+
+  return LogTime_addRandomMS(ts, min_diff, max_diff);
 }

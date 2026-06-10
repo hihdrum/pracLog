@@ -21,5 +21,6 @@ typedef struct logPayloadWriter
 } LogPayloadWriter;
 
 unsigned char *LogGen_writeRecord(struct timespec log_time, const LogPayloadWriter *lpw, LogRecord *buffer);
+struct timespec LogGen_nextTime(const struct timespec *ts);
 
 #endif
