@@ -1,0 +1,66 @@
+---
+# ログレコード バイナリ仕様
+
+version: "1.0"
+title: "ログレコード バイナリ仕様"
+description: "全言語実装に統一されたログレコードのバイナリレイアウト仕様"
+last_updated: "2026-08-08"
+
+# バイナリパッキングモード - フィールド間にパディングなし
+packing: 1  # C言語では #pragma pack(push, 1) に相当
+
+# データ構造定義
+structures:
+  LogHeader:
+    description: "ログレコードのヘッダ部分"
+    notes:
+      - "固定サイズ: 合計29バイト"
+      - "すべてのフィールドはASCII/char形式"
+    fields:
+      - name: date
+        type: char[8]
+        size_bytes: 8
+        description: "日付（yyyymmdd形式、例：20260808）"
+        
+      - name: time
+        type: char[9]
+        size_bytes: 9
+        description: "時刻（HHMMSSsss形式、ミリ秒を含む）"
+        
+      - name: kind
+        type: char[4]
+        size_bytes: 4
+        description: "ログ種別（4桁の英数字）"
+        
+      - name: size
+        type: char[8]
+        size_bytes: 8
+        description: "ペイロードサイズ（数字文字列形式）"
+
+  LogRecord:
+    description: "完全なログレコード構造（ヘッダ + 可変長ペイロード）"
+    notes:
+      - "ヘッダは固定サイズ（29バイト）"
+      - "ペイロードサイズはheader.sizeフィールドから決定する。"
+      - "総レコードサイズ = 29 + ペイロードサイズ バイト"
+      - "ペイロードは可変長である。ヘッダからサイズを読み取る。"
+    fields:
+      - name: header
+        type: LogHeader
+        size_bytes: 29
+        description: "ログレコードのヘッダ"
+        
+      - name: payload
+        type: unsigned char[]
+        size_bytes: "可変長（header.sizeから決定）"
+        description: "可変長ペイロードデータ"
+        notes:
+          - "サイズはheader.sizeフィールドから読み取る。"
+          - "ペイロード内容の形式はログ種別に依存する。"
+
+# 実装者向けの注釈
+implementation_notes:
+  - "エンディアンネスはリトルエンディアン想定とする。"
+  - "文字列フィールドはヌル終端ではない。"
+  - "ヘッダのペイロードサイズは数字文字列でパース可能とする。"
+  - "この仕様にはチェックサムやCRCは含まれない。"
