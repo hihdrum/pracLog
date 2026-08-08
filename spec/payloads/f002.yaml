@@ -1,0 +1,27 @@
+# F002系ペイロード仕様
+payload_schemas:
+  F002:
+    description: "F002系ログのペイロードスキーマ"
+    notes:
+      - "LogRecordのpayload領域に格納される。"
+      - "各サブタイプは4バイトの型識別子で始まる。"
+      - "型識別子はASCII文字列であり、D001のいずれか。"
+    variants:
+      D001:
+        description: "F002 D001 サブタイプのペイロード"
+        size_bytes: "可変長"
+        fields:
+          - name: type
+            type: char[4]
+            size_bytes: 4
+            description: "D001"
+
+          - name: len
+            type: int8
+            size_bytes: 1
+            description: "メッセージ長"
+
+          - name: message
+            type: char[]
+            size_bytes: "可変長（lenで指定）"
+            description: "可変長メッセージ"

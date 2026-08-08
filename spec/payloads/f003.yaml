@@ -1,0 +1,22 @@
+# F003系ペイロード仕様
+payload_schemas:
+  F003:
+    description: "F003系ログのペイロードスキーマ"
+    notes:
+      - "LogRecordのpayload領域に格納される。"
+      - "各サブタイプは4バイトの型識別子で始まる。"
+      - "型識別子はASCII文字列であり、D001のいずれか。"
+    variants:
+      D001:
+        description: "F003 D001 サブタイプのペイロード"
+        size_bytes: "可変長"
+        fields:
+          - name: type
+            type: char[4]
+            size_bytes: 4
+            description: "D001"
+
+          - name: payload
+            type: unsigned char[]
+            size_bytes: "可変長"
+            description: "可変長バイト配列"

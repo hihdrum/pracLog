@@ -1,0 +1,65 @@
+# F001系ペイロード仕様
+payload_schemas:
+  F001:
+    description: "F001系ログのペイロードスキーマ"
+    notes:
+      - "LogRecordのpayload領域に格納される。"
+      - "各サブタイプは4バイトの型識別子で始まる。"
+      - "型識別子はASCII文字列であり、D001/D002/D003のいずれか。"
+    variants:
+      D001:
+        description: "F001 D001 サブタイプのペイロード"
+        size_bytes: 6
+        fields:
+          - name: type
+            type: char[4]
+            size_bytes: 4
+            description: "D001"
+
+          - name: position
+            type: int16
+            size_bytes: 2
+            description: "符号付き16ビット整数の位置データ"
+
+      D002:
+        description: "F001 D002 サブタイプのペイロード"
+        size_bytes: 8
+        fields:
+          - name: type
+            type: char[4]
+            size_bytes: 4
+            description: "D002"
+
+          - name: x
+            type: int16
+            size_bytes: 2
+            description: "符号付き16ビット整数のX座標"
+
+          - name: y
+            type: int16
+            size_bytes: 2
+            description: "符号付き16ビット整数のY座標"
+
+      D003:
+        description: "F001 D003 サブタイプのペイロード"
+        size_bytes: 10
+        fields:
+          - name: type
+            type: char[4]
+            size_bytes: 4
+            description: "D003"
+
+          - name: x
+            type: int16
+            size_bytes: 2
+            description: "符号付き16ビット整数のX座標"
+
+          - name: y
+            type: int16
+            size_bytes: 2
+            description: "符号付き16ビット整数のY座標"
+
+          - name: z
+            type: int16
+            size_bytes: 2
+            description: "符号付き16ビット整数のZ座標"
