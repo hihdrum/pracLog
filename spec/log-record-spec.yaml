@@ -57,6 +57,7 @@ structures:
         notes:
           - "サイズはheader.sizeフィールドから読み取る。"
           - "ペイロード内容の形式はログ種別に依存する。"
+          - "具体的なスキーマは spec/payloads 配下の YAML で定義する。"
 
 # ペイロード別のスキーマ定義
 # 詳細は spec/payloads 配下の各 YAML を参照する。
